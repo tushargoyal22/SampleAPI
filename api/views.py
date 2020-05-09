@@ -5,22 +5,27 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
+from api import serializers
+
+class Student:
+    def __init__(self,name,roll,marks):
+        self.name = name
+        self.roll = roll
+        self.marks = marks
+
 # Create your views here.
+
 @api_view()
 def usersApi(request):
 
-    # may be this will be from db
-    users =[
-        {
-            "name": "Tushar Goyal",
-            "Language":"python"
-        },
+    student1 = Student("Tushar Goyal",1,100)
+    student2 = Student("Ashutosh Sharma",2,99)
+    student3 = Student("Anuj Goel",3,98)
 
-        {
-            "name": "Ashutosh Sharma",
-            "language":"C++"
-        }
-    ]
+    response = serializers.StudentSerializer([
+            student1,
+            student2,
+            student3
+        ] ,many=True)
 
-
-    return Response(users)
+    return Response(response.data)
