@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 from api import serializers
+from api import models
 
 class Student:
     def __init__(self,name,roll,marks):
@@ -14,13 +15,19 @@ class Student:
         self.marks = marks
 
 # Create your views here.
+@api_view()
+def articleApi(request):
+    articles = models.Article.objects.all()
+    response = serializers.ArticleSerializer(articles,many=True)
+    return Response(response.data)
+
 
 @api_view()
 def usersApi(request):
 
     student1 = Student("Tushar Goyal",1,100)
     student2 = Student("Ashutosh Sharma",2,99)
-    student3 = Student("Anuj Goel",3,98)
+    student3 = Student("Anuj Goyal",3,98)
 
     response = serializers.StudentSerializer([
             student1,
